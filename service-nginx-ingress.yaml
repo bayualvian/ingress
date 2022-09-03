@@ -1,25 +1,23 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: ReplicaSet
 metadata:
-  name: nodejs-web
-  labels:
-    name: nodejs-web
+  name: nginx
 spec:
   replicas: 3
   selector:
     matchLabels:
-      name: nodejs-web
+      name: nginx
   template:
     metadata:
-      name: nodejs-web
+      name: nginx
       labels:
-        name: nodejs-web
+        name: nginx
     spec:
       containers:
-        - name: nodejs-web
-          image: terobro/nodejs-web:1
+        - name: nginx
+          image: nginx
           ports:
-            - containerPort: 3000
+            - containerPort: 80
 
 ---
 
@@ -29,28 +27,25 @@ metadata:
   name: nginx-service
 spec:
   selector:
-    name: nodejs-web
+    name: nginx
   ports:
     - port: 80
-      targetPort: 3000
+      targetPort: 80
 
 ---
 
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: nginx-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+    name: nginx-ingress
 spec:
   rules:
     - host: ip172-18-0-28-cc9kdoder0q000bjbg9g.direct.labs.play-with-k8s.com
       http:
         paths:
-          - pathType: Prefix
-            path: "/"
+          - path: /
             backend:
-              service:
-                name: nginx-service
-                port:
-                  number: 80
+              serviceName: nginx-service
+              servicePort: 80
