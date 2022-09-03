@@ -1,23 +1,25 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
-  name: nginx
+  name: nodejs-web
+  labels:
+    name: nodejs-web
 spec:
   replicas: 3
   selector:
     matchLabels:
-      name: nginx
+      name: nodejs-web
   template:
     metadata:
-      name: nginx
+      name: nodejs-web
       labels:
-        name: nginx
+        name: nodejs-web
     spec:
       containers:
-        - name: nginx
-          image: nginx
+        - name: nodejs-web
+          image: terobro/nodejs-web:1
           ports:
-            - containerPort: 80
+            - containerPort: 3000
 
 ---
 
@@ -27,10 +29,10 @@ metadata:
   name: nginx-service
 spec:
   selector:
-    name: nginx
+    name: nodejs-web
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 3000
 
 ---
 
