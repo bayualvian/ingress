@@ -38,10 +38,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-ingress
-  labels:
-    name: nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
-  ingressClassName: nginx
   rules:
     - host: ip172-18-0-28-cc9kdoder0q000bjbg9g.direct.labs.play-with-k8s.com
       http:
