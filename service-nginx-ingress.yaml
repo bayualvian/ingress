@@ -42,7 +42,7 @@ metadata:
     name: nginx-ingress
 spec:
   rules:
-    - host: ip172-18-0-28-cc9kdoder0q000bjbg9g.direct.labs.play-with-k8s.com
+    - host: ip172-18-0-27-cmmdrevjipd0009fr2gg.direct.labs.play-with-k8s.com
       http:
         paths:
           - path: /
